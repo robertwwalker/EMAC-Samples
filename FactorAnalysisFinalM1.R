@@ -1,0 +1,43 @@
+sink("./CleanTestResultsFinal-M1-10-2022.txt")
+set.seed(103050701)
+library(tidyverse)
+library(readxl)
+EMData <- read_excel("Study 1 Final Version.xlsx", skip = 1)
+EMData.Anonymous <- read_excel("Study 1 Final Version.xlsx", skip = 2, col_names = FALSE)
+Keys <- data.frame(cbind(names(EMData),names(EMData.Anonymous)))
+names(EMData)[[80]]
+table(EMData.Anonymous$...80)
+names(EMData)[[81]]
+table(EMData.Anonymous$...81)
+names(EMData)[[84]]
+table(EMData.Anonymous$...84)
+names(EMData.Anonymous)[c(80,81,84)] <- c("Unselfish","Others.Opinions","Others.Interests")
+library(MCMCpack)
+Communal.Behavior <- MCMCordfactanal(~Unselfish+Others.Opinions+Others.Interests, data=EMData.Anonymous, factors=1, burnin=500000, mcmc=10000000, thin=1000, tune=1.3, store.scores=TRUE, L0=0.5, verbose = 500000)
+names(EMData)[[76]]
+table(EMData.Anonymous$...76)
+names(EMData)[[77]]
+table(EMData.Anonymous$...77)
+names(EMData)[[78]]
+table(EMData.Anonymous$...78)
+names(EMData)[[79]]
+table(EMData.Anonymous$...79)
+names(EMData.Anonymous)[c(76:79)] <- c("Leader","Individual.Success","Assertive","Strong.Opinions")
+Agentic.Behavior <- MCMCordfactanal(~Leader+Individual.Success+Assertive+Strong.Opinions, data=EMData.Anonymous, factors=1, burnin=500000, mcmc=10000000, thin=1000, tune=1.4, store.scores=TRUE, L0=0.5, verbose = 500000)
+names(EMData)[[13]]
+table(EMData.Anonymous$...13)
+names(EMData)[[14]]
+table(EMData.Anonymous$...14)
+names(EMData)[[15]]
+table(EMData.Anonymous$...15)
+names(EMData.Anonymous)[c(13,14,15)] <- c("Encourage.Starts","Reassure","Give.Confidence")
+Mentoring <- MCMCordfactanal(~Encourage.Starts+Reassure+Give.Confidence, data=EMData.Anonymous, factors=1, burnin=500000, mcmc=10000000, thin=1000, tune=1.5, store.scores=TRUE, L0=0.5, verbose = 500000)
+names(EMData)[[37]]
+table(EMData.Anonymous$...37)
+names(EMData)[[38]]
+table(EMData.Anonymous$...38)
+names(EMData)[[39]]
+table(EMData.Anonymous$...39)
+names(EMData.Anonymous)[c(37,38,39)] <- c("Respect","Understanding","Influence")
+Social.Influence <- MCMCordfactanal(~Respect+Understanding+Influence, data=EMData.Anonymous, factors=1, burnin=500000, mcmc=10000000, thin=1000, tune=2.3, L0=0.5, store.scores=TRUE, verbose = 500000)
+save.image("CleanTestResultsFinal-M1-10-2022.RData")
